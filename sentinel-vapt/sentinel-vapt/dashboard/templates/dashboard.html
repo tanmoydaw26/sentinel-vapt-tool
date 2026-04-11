@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="dark"]{--bg:#070b10;--surface:#0e141b;--surface2:#111922;--text:#e6edf3;--muted:#8093a8;--green:#29e37a;--red:#ff647c;--amber:#ffbf5f;--blue:#5da7ff;--border:#1e2833;--radius:18px;--shadow:0 18px 50px rgba(0,0,0,.35)}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,sans-serif;background:radial-gradient(circle at top right, rgba(41,227,122,.08), transparent 20%),var(--bg);color:var(--text);min-height:100vh}img,svg{display:block;max-width:100%}button{cursor:pointer}a{text-decoration:none;color:inherit}.app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}.sidebar{background:linear-gradient(180deg,#0b1117,#0a0f14);border-right:1px solid var(--border);padding:24px;position:sticky;top:0;height:100vh}.logo{display:flex;align-items:center;gap:12px;margin-bottom:30px}.mark{width:42px;height:42px;border-radius:14px;border:1px solid rgba(41,227,122,.4);display:grid;place-items:center;color:var(--green);font-family:'JetBrains Mono',monospace;box-shadow:0 0 22px rgba(41,227,122,.18)}.logo h1{font-size:22px}.nav a{display:block;padding:12px 14px;border:1px solid transparent;border-radius:14px;color:var(--muted);margin-bottom:10px}.nav a.active,.nav a:hover{border-color:var(--border);background:rgba(255,255,255,.02);color:var(--text)}.main{padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:22px}.panel{background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}.hero{padding:24px;display:flex;justify-content:space-between;gap:18px;align-items:end;background:radial-gradient(circle at top right, rgba(41,227,122,.08), transparent 25%),linear-gradient(180deg,#0f1720,#0d141c)}.hero p{color:var(--muted);max-width:72ch}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:18px 0}.card{padding:20px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}.big{font-size:32px;font-weight:800;margin-top:8px}.mono{font-family:'JetBrains Mono',monospace}.badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}.critical{background:rgba(255,100,124,.12);color:var(--red)}.high{background:rgba(255,191,95,.12);color:var(--amber)}.medium{background:rgba(93,167,255,.12);color:var(--blue)}.low{background:rgba(41,227,122,.12);color:var(--green)}.layout{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}.table-wrap{padding:18px;overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:14px;border-bottom:1px solid var(--border);vertical-align:top}th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9bb0c2}.list{padding:18px}.finding{padding:16px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.01);margin-bottom:14px}.progress{height:10px;border-radius:999px;background:#121a24;overflow:hidden;margin-top:12px}.bar{height:100%;background:linear-gradient(90deg,var(--green),#8cffb5);width:72%;box-shadow:0 0 18px rgba(41,227,122,.25)}@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}}@media(max-width:700px){.grid{grid-template-columns:1fr}.main{padding:18px}.hero{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><div class="mark">S</div><div><h1>Sentinel</h1><div style="color:var(--muted)">VAPT Console</div></div></div>
+    <nav class="nav">
+      <a class="active" href="#">Overview</a>
+      <a href="#">Findings</a>
+      <a href="#">Attack Surface</a>
+      <a href="#">Reports</a>
+      <a href="#">Splunk Export</a>
+      <a href="#">Plugins</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div><div class="eyebrow">Active Engagement</div><h2>Dark-Mode Security Operations Dashboard</h2></div>
+      <div class="badge low">Safe Mode Enabled</div>
+    </div>
+    <section class="panel hero">
+      <div>
+        <div class="eyebrow">Target</div>
+        <h2 class="mono">{{ data.target }}</h2>
+        <p>Sentinel correlates scanner output, authentication logic, API behavior, and exposed network services to prioritize real-world risk instead of raw signatures.</p>
+      </div>
+      <div style="min-width:260px;width:320px">
+        <div class="eyebrow">Scan Progress</div>
+        <div class="progress"><div class="bar"></div></div>
+        <div style="margin-top:12px;color:var(--muted)">{{ data.findings|length }} findings · {{ data.open_ports|length }} open ports · {{ data.subdomains|length }} subdomains</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel card"><div class="eyebrow">Total Findings</div><div class="big">{{ data.findings|length }}</div></div>
+      <div class="panel card"><div class="eyebrow">Open Ports</div><div class="big">{{ data.open_ports|length }}</div></div>
+      <div class="panel card"><div class="eyebrow">Subdomains</div><div class="big">{{ data.subdomains|length }}</div></div>
+      <div class="panel card"><div class="eyebrow">Directories</div><div class="big">{{ data.directories|length }}</div></div>
+    </section>
+
+    <section class="layout">
+      <div class="panel table-wrap">
+        <h3 style="margin-bottom:14px">Findings Matrix</h3>
+        <table>
+          <thead><tr><th>Title</th><th>Severity</th><th>CVSS</th><th>CWE</th><th>Endpoint</th></tr></thead>
+          <tbody>
+          {% for f in data.findings %}
+            <tr>
+              <td>{{ f.title }}</td>
+              <td><span class="badge {{ f.severity|lower }}">{{ f.severity }}</span></td>
+              <td class="mono">{{ f.cvss_score }}</td>
+              <td>{{ f.cwe }}</td>
+              <td class="mono">{{ f.endpoint }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="panel list">
+        <h3 style="margin-bottom:14px">Priority Notes</h3>
+        {% for f in data.findings[:5] %}
+          <div class="finding">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px"><strong>{{ f.title }}</strong><span class="badge {{ f.severity|lower }}">{{ f.severity }}</span></div>
+            <div style="color:var(--muted);font-size:14px">{{ f.description }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>
